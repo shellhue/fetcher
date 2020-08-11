@@ -1,6 +1,6 @@
 Fetcher for common resources.
 
-Suppoted API:
+Supported API:
 ```
 get_subfolders_recursively
 get_files_in_dir
