@@ -1,5 +1,9 @@
 import os
 
+
+img_formats = [".jpg", ".jpeg", ".png", ".JPEG", ".JPG", ".PNG"]
+
+
 def get_subfolders_recursively(folder_path):
     """Get all subfolders recursively in folder_path.
     """
@@ -11,30 +15,37 @@ def get_subfolders_recursively(folder_path):
     return folder_list
 
 
-def get_immediate_files_in_dir(dir_path, formats):
-    """Get all direct imgs in dir_path.
+def get_files_in_dir(dir_path, formats):
+    """Get all files just in directory of dir_path.
     """
-    imgs = []
+    all_files = []
     files = os.listdir(dir_path)
-    for file in files:
-        f = os.path.splitext(file)[1]
-        if f in formats:
-            imgs.append(os.path.join(dir_path, file))
-    return imgs
+    for f in files:
+        ext = os.path.splitext(f)[1]
+        if ext in formats:
+            all_files.append(os.path.join(dir_path, f))
+    return all_files
+
+
+def get_files_recursively_in_dir(root, formats):
+    """Get all files recursively contained in directory of root.
+    """
+    all_files = []
+    subfolders = get_subfolders_recursively(root)
+    subfolders.append(root)
+    for folder in subfolders:
+        files = get_files_in_dir(folder, formats)
+        all_files.extend(files)
+    return all_files
 
 
 def get_imgs_in_dir(root):
-    return get_immediate_files_in_dir(root, [".jpg", ".jpeg", ".png", ".JPEG", ".JPG", ".PNG"])
-
-
-def get_imgs_recursively_in_dir(root_dir):
-    """Get all imgs recursively in dir.
+    """Get all imgs just in directory of root.
     """
-    all_imgs = []
-    subfolders = get_subfolders_recursively(root_dir)
-    subfolders.append(root_dir)
-    for folder in subfolders:
-        imgs = get_immediate_files_in_dir(
-            folder, [".jpg", ".jpeg", ".png", ".JPEG", ".JPG", ".PNG"])
-        all_imgs.extend(imgs)
-    return all_imgs
+    return get_files_in_dir(root, img_formats)
+
+
+def get_imgs_recursively_in_dir(root):
+    """Get all imgs recursively contained in directory of root.
+    """
+    return get_files_recursively_in_dir(root, img_formats)
