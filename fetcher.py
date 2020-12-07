@@ -20,7 +20,7 @@ def get_subfolders(folder_path):
     """
     folder_path = _expand_user_and_relative_for_path(folder_path)
 
-    assert os.path.isdir(folder_path), "invalid folder path"
+    assert os.path.isdir(folder_path), "invalid folder path: {}".format(folder_path)
     return [f.path for f in os.scandir(folder_path) if f.is_dir()]
 
 
@@ -34,7 +34,7 @@ def get_subfolder_names(folder_path):
         list[str]: list of subfolder name string
     """
     folder_path = _expand_user_and_relative_for_path(folder_path)
-    assert os.path.isdir(folder_path), "invalid folder path"
+    assert os.path.isdir(folder_path), "invalid folder path: {}".format(folder_path)
     return [f.name for f in os.scandir(folder_path) if f.is_dir()]
 
 
@@ -48,7 +48,7 @@ def get_subfolders_recursively(folder_path):
         list[str]: list of subfolder path string
     """
     folder_path = _expand_user_and_relative_for_path(folder_path)
-    assert os.path.isdir(folder_path), "invalid folder path"
+    assert os.path.isdir(folder_path), "invalid folder path: {}".format(folder_path)
     folder_list = []
     for root, dirs, _ in os.walk(folder_path):
         for one_dir in dirs:
@@ -68,8 +68,8 @@ def get_files_in_dir(dir_path, formats):
         list[str]: list of file path string
     """
     dir_path = _expand_user_and_relative_for_path(dir_path)
-    assert os.path.isdir(dir_path), "invalid directory path"
-    assert len(formats), "invalid format"
+    assert os.path.isdir(dir_path), "invalid directory path: {}".format(dir_path)
+    assert len(formats), "invalid format: {}".format(formats)
     all_files = []
     files = os.listdir(dir_path)
     for f in files:
@@ -90,8 +90,8 @@ def get_files_recursively_in_dir(root, formats):
         list[str]: list of file path string
     """
     root = _expand_user_and_relative_for_path(root)
-    assert os.path.isdir(root), "invalid folder path"
-    assert len(formats), "invalid format"
+    assert os.path.isdir(root), "invalid folder path: {}".format(root)
+    assert len(formats), "invalid format: {}".format(formats)
     all_files = []
     subfolders = get_subfolders_recursively(root)
     subfolders.append(root)
